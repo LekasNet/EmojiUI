@@ -31,7 +31,7 @@ while True:
         
     font = CV2.FONT_HERSHEY_SIMPLEX
     cv2.putText(frame,
-                predictions[0]['dominant_emotion'],
+                result['dominant_emotion'],
                 (50, 50),
                 font, 3,
                 (0, 255, 0),
