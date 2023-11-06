@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:camera/camera.dart';
+import 'package:video_player/video_player.dart';
+
+
+class CameraScreen extends StatefulWidget {
+  @override
+  _CameraScreenState createState() => _CameraScreenState();
+}
+
+class _CameraScreenState extends State<CameraScreen> {
+  late CameraController cameraController;
+  late VideoPlayerController videoController;
+
+  @override
+  void initState() {
+    super.initState();
+    initializeCamera();
+  }
+
+  Future<void> initializeCamera() async {
+    final cameras = await availableCameras();
+    cameraController = CameraController(cameras[0], ResolutionPreset.medium);
+    await cameraController.initialize();
+    videoController = VideoPlayerController.network('');
+    await videoController.initialize();
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    cameraController.dispose();
+    videoController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _startStreaming() async {
+    final serverURL = Uri.parse('http://192.168.1.65:3000/stream'); // Замените на адрес вашего сервера
+    await cameraController.startImageStream((CameraImage img) {
+      // Отправка каждого кадра на сервер
+      final imageBytes = img.planes[0].bytes;
+      http.post(serverURL, body: imageBytes);
+    });
+    }
+
+  Future<void> _stopStreaming() async {
+    await cameraController.stopImageStream();
+    }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Потоковая передача видео на сервер'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            cameraController != null
+                ? AspectRatio(
+              aspectRatio: cameraController.value.aspectRatio,
+              child: CameraPreview(cameraController),
+            )
+                : CircularProgressIndicator(),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _startStreaming,
+              child: Text('Начать потоковую передачу'),
+            ),
+            ElevatedButton(
+              onPressed: _stopStreaming,
+              child: Text('Остановить потоковую передачу'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
