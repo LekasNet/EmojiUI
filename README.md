@@ -1,16 +1,12 @@
-# emojsolution
+# EmojiUI
 
 Распознавание эмоций людей с аутистическими наклонностями
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Для того, чтобы запустить приложение необходимо склонировать последнюю версию проекта из [production](https://github.com/LekasNet/EmojiUI/tree/production) ветки.
+Открыть проект необходимо в android studio (или любом другом редакторе с возможностью компилирования Flutter приложения), а папку server в проекте можно переместить в любое другое место и открыть в pycharm (или в любом другом редакторе, способном запустить pyhton файл).
+Так как сервер не находится на домене, или хотя-бы статичном адресе, то в config.json в поле apiUrl значение нужно заменить на ваш нынешний IPv4 в формате 
+```"http://<Your IPv4>:3000"```
+То же самое необходимо сделать с main.py в server. Там в поле app.run (самый низ файла) в графе host необходимо вставить Ваш IPv4
+После всех действий запускаете сервер, билдите приложение на свой телефон, или виртуальное устройство под управлением OC Android и можно пользоваться.
