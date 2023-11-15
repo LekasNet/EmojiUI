@@ -74,7 +74,7 @@ class CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver{
 
   void _startStreaming() async {
     await _initializeControllerFuture;
-    const interval = Duration(seconds: 1); // Интервал между снимками
+    const interval = Duration(seconds: 3); // Интервал между снимками
     _timer = Timer.periodic(interval, (timer) => _takePicture());
     setState(() => isStreaming = true);
     _controller.setFlashMode(FlashMode.off);
